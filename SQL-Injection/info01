@@ -1,0 +1,6 @@
+Sql injection attacks;
+  - it's an attack that attacker used to extract data of users inside the program and compromise the servers or the backend of the program 
+  - it may be done using denial of service attack
+  - as I said above it's impact as you know;
+    - extract the data of the users like; passwords,credit cards...
+  
