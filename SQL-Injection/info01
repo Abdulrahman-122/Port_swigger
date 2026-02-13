@@ -57,5 +57,19 @@ I added '+or+1=1+--
 this is the next test that you can add to make a sql injection into the lab 
 note that ; '-- didn't show the whole items in the database so we used the other condition
 
+----
+2.Subverting application logic
+
+by using query like this ; SELECT * FROM users WHERE username = 'administrator'--' AND password = ''
+you will notice that ; '--' => this comments will neglect all of what coming after it.
+and just get the username with that name 
+the solution of the lab on this;
+ This lab contains a SQL injection vulnerability in the login function.
+
+To solve the lab, perform a SQL injection attack that logs in to the application as the administrator user. 
+
+
+
+
 
   
