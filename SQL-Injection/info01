@@ -68,7 +68,39 @@ the solution of the lab on this;
 
 To solve the lab, perform a SQL injection attack that logs in to the application as the administrator user. 
 
+the solution;
+fill in the name with; administrator'--
+then password with any num; 1233 
+then click enter it will attack this website forward
+---
+Retrieving data from other tables:
+  first you need to understand how union works in database;
+SELECT City, Country FROM Customers
+UNION
+SELECT City, Country FROM Suppliers
+ORDER BY City;
+union remove all duplicates between rows + return compining data but without any duplication combine data vertically
+return the same number of columns -> the tables to be compared have the same number of cclumns
++compatiple data types
+This is called; SQL injection Union attack:
+lab;
+ This lab contains a SQL injection vulnerability in the product category filter. The results from the query are returned in the application's response, so you can use a UNION attack to retrieve data from other tables. The first step of such an attack is to determine the number of columns that are being returned by the query. You will then use this technique in subsequent labs to construct the full attack.
 
+To solve the lab, determine the number of columns returned by the query by performing a SQL injection UNION attack that returns an additional row containing null values. 
+
+the soulution will be by adding this ; 'UNION SELECT NULL,NULL,NULL--    -> so the number of the tables are 3 as NULL is accepted 3 times and it's represent any datatype for our program to be matched with the opposite comparing of UNIION
+
+to the response of the page .
+notes; why adding  ' before writing injection 
+      -> as we need to escape the string that program tried to cover it on our script so we escape this but if the program accept number so we don't need to add ' 
+like;
+if program need ; username='administrator' you passed to it ;  UNION SELECT NULL,NULL-- -> it will wrap around it a '' so it will be string so it's now can't be read by the database to work on
+
+also we add -- to escape the trailing of the program 
+
+---
+Blind SQL injection volunerabilities;
+stop here 
 
 
 
