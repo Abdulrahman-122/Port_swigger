@@ -1,3 +1,12 @@
 how to connect your burp-suite to your browser in order to intercept and see the traffic that 's comming from your local website or whatever;
 https://www.youtube.com/watch?v=nsxlnRqKYJA 
 this guy explain it correctly you can do it by your self
+
+you can use burpsuit to 
+- intercept HTTP traffic 
+- you can modify requests which is the much benefial thing in it.
+  - so I learned in this lesson how to modify request that is sent to the server through it
+- also set the targer scope you want to see on burp suit 
+- also I learned how to reissue the requests with Burp repeater -> you send the request after you change something in then you see the output of server
+    whether it's 200 or 500 or 401 or 403..
+still learning
