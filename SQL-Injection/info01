@@ -99,8 +99,75 @@ if program need ; username='administrator' you passed to it ;  UNION SELECT NULL
 also we add -- to escape the trailing of the program 
 
 ---
-Blind SQL injection volunerabilities;
-stop here 
+# Blind SQL injection volunerabilities;
+  - in this sql injection -> we ask database some questions yes,no => 
+  - we extract data by asking database tons of questions
+  - you may ask it like that ;
+    select id  from users where id='1234444455...' 
+      if the id exists -> database says ; like welcome to the website or whatever
+
+now steps to do this attack;
+  - select id from users where id='1233...' and  '1'='1';
+    once the system says  somthing or open the website for you -> this means we can ask database any question
+      is the admin pass start with a ...
+
+  - you ask about the first character of the pass of the admin ;
+    select id , substring(select pass from users where username='Admin',1,1)='a 
+   from users and '1'='1'
+      we need to extract the pass of admin character by other untill know it 
+      if website open it's gate this means => a is correct else not try again 
+      substring(string,1,1)=>1 -> the first character of the pass you ask for 
+- also you may ask by ; is letter > "m" ?
+
+so now ; what we will do ;
+  - take the cookie of the you -> inject with it a statement like this 
+select id from users where id=your cookie' and ' 1 '=' 1';
+so to know the password of the user called administrator; we use blind sqlinjection attack
+like this ;xyz' AND SUBSTRING((SELECT Password FROM Users WHERE Username = 'Administrator'), 1, 1) > 'm
+if return true -> that means first char > m 
+xyz' AND SUBSTRING((SELECT Password FROM Users WHERE Username = 'Administrator'), 1, 1) > 't
+if return false -> first character -> not >t
+so it's located from m to t
+now 
+xyz' AND SUBSTRING((SELECT Password FROM Users WHERE Username = 'Administrator'), 1, 1) = 's
+if yes -> we know the first character is s 
+repeat the process on all the coming characters.
+
+lab ; 
+
+ This lab contains a blind SQL injection vulnerability. The application uses a tracking cookie for analytics, and performs a SQL query containing the value of the submitted cookie.
+
+The results of the SQL query are not returned, and no error messages are displayed. But the application includes a Welcome back message in the page if the query returns any rows.
+
+The database contains a different table called users, with columns called username and password. You need to exploit the blind SQL injection vulnerability to find out the password of the administrator user.
+
+To solve the lab, log in as the administrator user.
+Hint
+
+You can assume that the password only contains lowercase, alphanumeric characters.
+
+analysis;
+  - blind sql injection 
+  - cookie for user
+  - if query false -> no error appears , if yes -> pages says welcome back
+  - database contain table=user
+    - columns -> username,password
+  - use blind sql to exploit and extract user password
+  - log in as an administrator 
+  - assume pass -> contain lowecase+alphanumeric chars.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
