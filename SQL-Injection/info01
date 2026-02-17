@@ -154,7 +154,7 @@ analysis;
     - columns -> username,password
   - use blind sql to exploit and extract user password
   - log in as an administrator 
-  - assume pass -> contain lowecase+alphanumeric chars.
+  - assume pass -> contain lowecase+alphanumeric chars.ddd
 
 
 
