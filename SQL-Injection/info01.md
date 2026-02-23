@@ -610,6 +610,7 @@ out of band the most effective way to find a vulnerability through the db.
 	untill now ; we need to download other band(to get the output of the database we need to vulnerable this band is done using DNS server)
 	~/go/bin/interactsh-client -v -o interactsh-log.txt  tomorrow you need to start with this command + start OAST sql injection lab inshallah
 
+pause for now.
 	
  
  
@@ -644,8 +645,17 @@ analysis;
 	- to solve ->pass with administrator user
 	
 
+- 
+This lab contains a SQL injection vulnerability in its stock check feature. The results from the query are returned in the application's response, so you can use a UNION attack to retrieve data from other tables.
+The database contains a users table, which contains the usernames and passwords of registered users. To solve the lab, perform a SQL injection attack to retrieve the admin user's credentials, then log in to their account. 
+analysis;
+	- stock check feature
+	- use Union to retrive data from other tables
+	- users => usernames,passwords
+	 - sql injection => admin credentials
 
-
+solution;
+- 
 
 
 
