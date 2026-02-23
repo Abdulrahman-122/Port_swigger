@@ -353,7 +353,7 @@ How to obfuscute URL double in order to inject your payload?
 
 --
 Obfuscation via Html encoding??
-  - now we want to pass the injection payload throught the server using an HTML script-> just incode the word
+  - now we want to pass the injection payload through the server using an HTML script-> just incode the word
   - also you can  avoid the blocking by the server by adding some zeros before the script you encoded.
   - <stockCheck>
     <productId>
@@ -405,8 +405,7 @@ l1jhqclppsp5tpzcsnu5
 35 units
 
 from here we want administrator + it's pass is the first one let's pass in 
- 	 
-not solved yet as ther's a problem in the portswigger.
+done.
 
 
 ----
@@ -589,6 +588,9 @@ solution
 ' || pg_sleep(10)--
 this will pause the database for  10 seconds (solution) why we used pg_sleep(10) -> that means that we inside postgresql as it works
 if  you hacked another thing -> you   just see how to sleep it with different database commands untill you see the output is paused.
+
+to solve this challange you need sqlmap to understand it will solve it fast.
+
  
  
  Exploiting blind SQL injection using out-of-band (OAST) techniques
