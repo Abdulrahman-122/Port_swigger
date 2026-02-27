@@ -94,3 +94,28 @@ things I learned from this lab
 you can outline a word in the code of the page and filter it by the attack to see if there's any attack that has another value than it or not
 	if  there you make a subtle attack. and you can extract the name,password
      
+------
+lab3;
+Lab: Username enumeration via response timing 
+ This lab is vulnerable to username enumeration using its response times. To solve the lab, enumerate a valid username, brute-force this user's password, then access their account page.
+
+    Your credentials: wiener:peter
+    Candidate usernames
+    Candidate passwords
+hint;
+To add to the challenge, the lab also implements a form of IP-based brute-force protection. However, this can be easily bypassed by manipulating HTTP request headers. 
+analysis;
+	- username enumeration(vulnerable) => focus on response times
+x-Forwarded-For is used to generate an Ip for the request you sent to the application so you put payload on it to make it change the ip as the backend will block you for 30min if you used the same ip for another Get request 
+username enumeration;
+	X-Forwarded-For: 62
+Username=anaheim&password=peterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeterpeter: 
+
+password bruteforcing
+to extract the password you make another payload 
+like this
+X-Forwarded-For: 62
+Username=anaheim&password=peter: 
+put payload around X-for... and make it's range from 101;200 to avoid bloking your request as you used in the first attempt from 0;100
+also put payload around password 
+but the answer with me is wrong so I will try later .
