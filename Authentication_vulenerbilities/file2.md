@@ -639,7 +639,46 @@ solution ;
 	- do the same with the victim info
 	- then you will access to the victim varification code after 1st step of 2FA then at the end of that page write instead of login -> myaccount the lab will be solved directly.
 	
+-----
 
+Flawed two-factor verification logic
+	-flawed -> damage something
+	- when the user try to write it's credentials like in the log in page
+	- the  website assign a cookie to his credentials in order to take that cookie when send to him the varification code;
+	now once the website had sent the varification code this code contain above the name of the user who will will write it's credentials at the 1st step of 2FA like;
+	POST /login-steps/second HTTP/1.1
+	Host: vulnerable-website.com
+	Cookie: account=carlos
+	...
+	verification-code=123456
+	
+	now as an attecker you can acess any website using your credentials then do brute force attack on the varification code after he change the name of the account to the any victim he want to access.
+	(it's dangereous)
+	lab;
+	 This lab's two-factor authentication is vulnerable due to its flawed logic. To solve the lab, access Carlos's account page.
+	    Your credentials: wiener:peter
+	    Victim's username: carlos
+	You also have access to the email server to receive your 2FA verification code.
+	Hint
+	Carlos will not attempt to log in to the website himself.
+	
+	solution;
+	
+	still can't do it using caido (try it later)
+
+-------------------------------------------
+so to sum up ; 2FA(second force authentication)
+
+	- as website prevent any user to login with many varification code but this still unsecure as attackers can use automation to hack their way into the varification code using intruder or whatever on caido..
+	-however there are other mechanisms to hack the users through forger password pages that in the log in page 
+	
+	- some websites make cookie based on static values like(username,timestamp..some part of password)
+	the attacker can assign using his website and then try to study his cookie very well then start hack the other users by play around this open door by making some brute force attack..
+	
+	
+	- even if the web uses hash encryption to encrypt their varification code or the cookie => attacker may try to guess the encryption algorithm and attack this web users , also they can use xss on remember me cookie,
+	also they can deduce the cookie if the web was built using an open source framework as they tell us about the construction of the cookie.
+	
 
 
 
