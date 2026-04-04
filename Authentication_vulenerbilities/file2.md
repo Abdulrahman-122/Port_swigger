@@ -594,6 +594,51 @@ moscow
 solution;username=alpha&password=abc123
 as you see ; when access the http response -> you will see my account instead of invalide username or password 
 
+------
+
+User rate limiting;
+	-> A way websites are using to block the IP of the hacker who can login multiple times at a time
+	
+	-> to unblock the the IP address you need to ;
+		- wait after being blocked by an elapsed time
+		- Manually by the admin
+		- Manually by the user who complete a captcha(a problem you solve to ensure  that you aren't a hacker.)
+		
+	=> but all of these aren't secure at all as you can bypass your block as the lab we did before
+	-> you can gues what number of passwords to bypass to the server within a single request.
+
+now;
+authentication -> check the identity of the person who want to login in 
+autherization -> grant the resouces , data to the user who is being authenticated into the website.
+so : once user open the page -> the server send a token to him contain it's name,password into base64 like that and store it into autherization  header of the page;
+	Authorization: Basic base64(username:password) 
+	note; this returning from the server to the user is not secure as any one can vulnerable that autherization and use it in more contexts
+	now;
+Vulnerabilities in multi-factor authentications?
+	- multi-factor authentications -> website uses more than way to check the identity of the user 
+		while single factor authentication -> website uses one way to check the identity (writing his password)
+
+		- however -> using single factor authentication is not secure while using 2FA is secure one especially if it was dependant on multiple factor not the same one like; using password to login with another code depend on email credentials.
+			-2FA -> depend on physical device to generate the token from it (in this case it's secure)
+				-while some websites send SIM tokens to the users (but in this case ; attacker can fraudulrnltly user and use it's sim card with it's number and then receive all SMS messages that sent to him in this case he can intercept these message and hack him
+Now How to bypass two factor Authentications?
+	- once user start to logged in between entering the password,entering the varification code -> you mush test to see if you can skip to logged into page 
+	
+let's solve this lab to understand more;
+
+This lab's two-factor authentication can be bypassed. You have already obtained a valid username and password, but do not have access to the user's 2FA verification code. To solve the lab, access Carlos's account page.
+    
+    Your credentials: wiener:peter
+    Victim's credentials carlos:montoya
+	
+solution ;
+
+	- log in as your self
+	- click email client on the top of the page
+	- note the end of the url of your varification code after  you take the code from the email page you will put it into varification code then note the end of the url as -> my account paste that end
+	- do the same with the victim info
+	- then you will access to the victim varification code after 1st step of 2FA then at the end of that page write instead of login -> myaccount the lab will be solved directly.
+	
 
 
 
